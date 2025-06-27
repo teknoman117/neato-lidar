@@ -43,24 +43,24 @@ namespace kybernetes
         class SerialDevice {
         public:
             // Constructor/Deconstructor
-            SerialDevice(std::string port, unsigned int baudrate) throw (SerialDeviceException);
+            SerialDevice(std::string port, unsigned int baudrate);
             ~SerialDevice();
-            
+
             // Port setup
             void setBaudrate(unsigned int baudrate);
-            
+
             // Raw port settings control
             void set_termios(struct termios *settings);
             void get_termios(struct termios *settings);
-            
-            // Port status 
+
+            // Port status
             unsigned int available();  // returns bytes currently in buffer
             void         flush(unsigned int buffers);      // flush the buffers
-            
+
             // IO Operations
             size_t read (char *s, size_t n);
             size_t write(char *s, size_t n);
-            
+
             // Utility function for searching for a particular string
             bool readToken(const char* token, size_t length);
         private:

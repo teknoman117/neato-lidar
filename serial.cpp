@@ -29,7 +29,7 @@
 
 using namespace kybernetes::io;
 
-SerialDevice::SerialDevice(std::string port, unsigned int baudrate) throw (SerialDeviceException)
+SerialDevice::SerialDevice(std::string port, unsigned int baudrate)
 {
     // Open the port
     fd = open(port.c_str(), O_RDWR | O_NOCTTY | O_NDELAY);
@@ -76,11 +76,11 @@ void SerialDevice::setBaudrate(unsigned int baudrate)
     // Get the current settings
     struct termios settings;
     get_termios(&settings);
-    
+
     // Set the baudrate
     cfsetispeed(&settings, baudrate);
     cfsetospeed(&settings, baudrate);
-    
+
     // Set the new settings
     set_termios(&settings);
 }
@@ -143,7 +143,7 @@ bool SerialDevice::readToken(const char* token, size_t length)
     // If there are not enough values to represent the token, well obviously its not there
     if(available() < length)
         return false;
-    
+
     // Check every element if its part of the token
     char b = 0;
     for(size_t i = 0; i < length; i ++)
@@ -151,14 +151,14 @@ bool SerialDevice::readToken(const char* token, size_t length)
         // Read a byte from the imu device's buffer
         read(&b, 1);
         //std::cout << "Rcv'd: " << (short) b << " compare to: " << (short) token[i] << std::endl;
-        
+
         // If the byte is not equivalent to that of the token, return false
         if(b != token[i])
         {
             return false;
         }
     }
-    
+
     // return success, we synchronized with the imu data stream
     return true;
 }
